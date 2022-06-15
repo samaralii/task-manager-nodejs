@@ -5,8 +5,8 @@ const auth = require('../middleware/auth')
 const multer = require('multer')
 
 const router = new express.Router()
+
 const upload = multer({
-    // dest: 'images',
     limits: {
         //1 mb
         fileSize: 1000000,
@@ -111,6 +111,7 @@ router.delete('/users/me', auth, async (req, res) => {
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
 
+    //https://github.com/expressjs/multer/issues/203#issuecomment-348856217
     const buffer = await sharp(req.file.buffer)
         .resize({ width: 250, height: 250 })
         .png()
